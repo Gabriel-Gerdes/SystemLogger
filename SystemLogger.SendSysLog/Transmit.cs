@@ -57,7 +57,7 @@ namespace SystemLogger.SendSysLog
                 var _newBroadcastModel = new BroadcastModel(name);
                 _newBroadcastModel.AddIPAddress(IPAddress);
                 _newBroadcastModel.AddPort(port);
-                BroadcastModels.Add(new BroadcastModel(name));
+                BroadcastModels.Add(_newBroadcastModel);
                 _returnMessage = "Channel Added.";
             }
             else
