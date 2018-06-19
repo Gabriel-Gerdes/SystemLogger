@@ -8,15 +8,15 @@ namespace SystemLogger.SendSysLog
     public class Transmission
     {
         //This Function outputs the transmission 
-        public void BroadcastMessage(BroadcastModel Channel)
+        public static bool BroadcastMessage(BroadcastModel Channel)
         {
             Boolean exception_thrown = false;
 
-            string text_to_send = ($"You are brodcasting on port {Channel.Port}, under the IP address {Channel.Address}. \n Message Start: {Channel.Message}");
+            string text_to_send = ($"Message Start: {Channel.Message}");
 
             byte[] send_buffer = Encoding.ASCII.GetBytes(text_to_send);
             Console.WriteLine($"\nBroadcast Name: { Channel.BroadcastName}, Itteration: {Channel.MessageNumber}");
-            Console.WriteLine($"Sending to address: {Channel.Address}, Port: {Channel.Port}");
+            Console.WriteLine($"Sending to address: {Channel.Address}:{Channel.Port}");
             try
             {
                 Channel.SendingSocket.SendTo(send_buffer, Channel.SendingEndPoint);
@@ -24,7 +24,7 @@ namespace SystemLogger.SendSysLog
             catch (Exception send_exception)
             {
                 exception_thrown = true;
-            Console.WriteLine($" Exception {send_exception.Message}");
+                Console.WriteLine($" Exception {send_exception.Message}");
             }
             if (exception_thrown == false)
             {
@@ -34,8 +34,9 @@ namespace SystemLogger.SendSysLog
             else
             {
                 exception_thrown = false;
-            Console.WriteLine("The exception indicates the message was not sent.");
+                Console.WriteLine("The exception indicates the message was not sent.");
             }
+            return exception_thrown;
         }
     }
 }

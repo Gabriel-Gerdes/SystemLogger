@@ -8,25 +8,22 @@ namespace SystemLogger.SendSysLog
     public class Transmit
     {
         public List<BroadcastModel> BroadcastModels { get; private set;}
-        private Boolean Kill { get; set; }
 
         public Transmit() {
             BroadcastModels = new List<BroadcastModel>();
-            Kill = false;
         }
 
         public void Start() {
-            var transmission = new Transmission();
             if (BroadcastModels != null)
             {
                 //TODO figure out the best way to kill this loop.
-                while (!Kill)
+                while (true)
                 {
                     foreach (var i in BroadcastModels)
                     {
-                        System.Threading.Thread.Sleep(2500);
-                        transmission.BroadcastMessage(i);
+                        Transmission.BroadcastMessage(i);
                     }
+                    Console.ReadLine();
                 }
             }
             else
@@ -35,6 +32,8 @@ namespace SystemLogger.SendSysLog
             }
         }
 
+        //Function Adds a Broadcast to the list of BroadcastModels.
+        //Returns a string declaring if the addition was successful or not.
         public string AddBroadcastModel(string name)
         {
             string _returnMessage;
@@ -50,8 +49,13 @@ namespace SystemLogger.SendSysLog
             return _returnMessage;
         }
 
+        //Overload used when the user wishes it create a Broadcast with a spcific Address and port.
+        //Returns a string declaring if the addition was successful or not.
         public string AddBroadcastModel(string name, string IPAddress, int port) {
             string _returnMessage;
+
+            //Checks to see if the desired name is alread used. 
+            //This is only used if the UI requests userinput instead of a list when deleting or editing the Broadcasts.
             if (BroadcastModels.Find(x => x.BroadcastName == name) == null)
             {
                 var _newBroadcastModel = new BroadcastModel(name);
@@ -67,24 +71,61 @@ namespace SystemLogger.SendSysLog
                 return _returnMessage;
         }
 
+        //function Deletes a Broadcast Model from BroadcastModels.
+        //Returns a string declaring it was successful or returns an updated thrown exception.
         public String DeleteBroadcastModel(string name) {
-            string _returnMessage;
             try
             {
                 BroadcastModels.Remove(BroadcastModels.Find(x => x.BroadcastName == name));
-                _returnMessage = "Channel Deleted.";
+                return  "Channel Deleted.";
             }
             catch (Exception exception)
             {
-                Console.WriteLine($" Exception {exception.Message}");
-                _returnMessage = "Failed to Delete Channel.";
+                throw new Exception($"Exception: {exception.Message} \nFailed to Delete Channel.");
+            }
+        }
+
+        //Overload used if the UI provides a list of possible Broadcasts instead of asking for a typed response.
+        //Returns a string declaring it was successful or returns an updated thrown exception.
+        public String DeleteBroadcastModel(Guid id)
+        {
+            try
+            {
+                BroadcastModels.Remove(BroadcastModels.Find(x => x.ID == id));
+                return "Channel Deleted.";
+            }
+            catch (Exception exception)
+            {
+                //Adds "Failed to Delete" to a thrown exception.
+                throw new Exception($"Exception: {exception.Message} \nFailed to Delete Broadcast.");
+            }
+        }
+
+        //Function Adds a message to a spacific Broadcast
+        //Returns a string detailing if it was successful. 
+        public String AddMessage(string name, string message) {
+            string _returnMessage;
+
+            //Looks for a Broadcast Model with the Identifying name.
+            var model = BroadcastModels.FirstOrDefault(x => x.BroadcastName == name);
+
+            if (model != null)
+            {
+                model.Message = message;
+                _returnMessage = "Message Added.";
+            }
+            else
+            {
+                _returnMessage = "Failed to add message. \n No existing Broadcast.";
             }
             return _returnMessage;
         }
 
-        public String AddMessage(string name, string message) {
+        //Overload used if the UI provides a list of possible BroadcastModels instead of asking for a typed response.
+        public String AddMessage(Guid id, string message)
+        {
             string _returnMessage;
-            var model = BroadcastModels.FirstOrDefault(x => x.BroadcastName == name);
+            var model = BroadcastModels.FirstOrDefault(x => x.ID == id);
 
             if (model != null)
             {

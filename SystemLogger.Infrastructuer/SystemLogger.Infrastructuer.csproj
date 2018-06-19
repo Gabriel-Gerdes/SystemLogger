@@ -4,8 +4,4 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ServiceLogger.Core\ServiceLogger.Core.csproj" />
-  </ItemGroup>
-
 </Project>
