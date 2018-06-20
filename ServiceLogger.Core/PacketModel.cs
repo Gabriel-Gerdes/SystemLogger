@@ -12,5 +12,9 @@ namespace ServiceLogger.Core
         public int DestinationPort { get; private set; }
         public string Data { get; set; }
 
+        public PacketModel(){
+            ID = Guid.NewGuid();
+            Data = "";
+        }
     }   
 }

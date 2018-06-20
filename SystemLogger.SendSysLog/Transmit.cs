@@ -2,35 +2,52 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace SystemLogger.SendSysLog
 {
     public class Transmit
     {
+        private object _runlock;
+        private bool _run;
+        public bool Run {
+            get { lock (_runlock) { return _run; } }
+            set { lock (_runlock) { _run = value; } }
+        }
         public List<BroadcastModel> BroadcastModels { get; private set;}
 
         public Transmit() {
             BroadcastModels = new List<BroadcastModel>();
+            _runlock = false;
         }
 
         public void Start() {
+
+            if (Run) return;
+            Run = true;
             if (BroadcastModels != null)
             {
-                //TODO figure out the best way to kill this loop.
-                while (true)
-                {
-                    foreach (var i in BroadcastModels)
-                    {
-                        Transmission.BroadcastMessage(i);
-                    }
-                    Console.ReadLine();
-                }
+                System.IO.File.WriteAllText(@"C:\Users\Gabriel J. Gerdes\Documents\GitHub\SystemLogger\SentMessages.txt", "");
+                Thread tBroadcast = new Thread(NewBroadcastThread);
+                tBroadcast.Start();
             }
             else
             {
                 throw new ArgumentException($"{nameof(BroadcastModels)} cannot be null or empty.");
             }
         }
+
+        private void NewBroadcastThread()
+        {
+            while (Run)
+            {
+                foreach (var i in BroadcastModels)
+                {
+                    Transmission.BroadcastMessage(i);
+                }
+                System.Threading.Thread.Sleep(5000);
+            }
+        } 
 
         //Function Adds a Broadcast to the list of BroadcastModels.
         //Returns a string declaring if the addition was successful or not.

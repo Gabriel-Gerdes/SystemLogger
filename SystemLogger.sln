@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SystemLogger.SendSysLog", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SystemLogger.Console", "SystemLogger.Console\SystemLogger.Console.csproj", "{28B5B9DF-7BD0-49BD-B4B5-8AA621F53082}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SystemLogger.Infrastructuer", "SystemLogger.Infrastructuer\SystemLogger.Infrastructuer.csproj", "{E4174F83-CCA7-4F1B-9719-CB22AFB2EE8B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SystemLogger.Infrastructuer", "SystemLogger.Infrastructuer\SystemLogger.Infrastructuer.csproj", "{E4174F83-CCA7-4F1B-9719-CB22AFB2EE8B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -17,25 +17,29 @@ namespace SytemLogger.Services
             Channels = new List<ChannelModel>();
             Packets = new List<PacketModel>();
             }
-        public void Listen (ChannelModel channel, PacketModel packet)
-        {   
+        public void Listen ()//ChannelModel channel, PacketModel packet)
+        {
+            ChannelModel channel = new ChannelModel(514);
+            PacketModel packet = new PacketModel();
+            bool done = false;
             byte[] receive_byte_array; //must use byte array for reciving.
+            IPEndPoint groupEP = channel.IPEndPoint;
             try
             {
                 while (!done)
                 {
                     Console.WriteLine("Waiting for broadcast");
-                    receive_byte_array = listener.Receive(ref groupEP);
+                    receive_byte_array = channel.Client.Receive(ref groupEP);
                     Console.WriteLine("Received a broadcast from {0}", groupEP.ToString());
-                    received_data = Encoding.ASCII.GetString(receive_byte_array, 0, receive_byte_array.Length);
-                    Console.WriteLine("data follows \n{0}\n\n", received_data);
+                    packet.Data = Encoding.ASCII.GetString(receive_byte_array, 0, receive_byte_array.Length);
+                    Console.WriteLine("data follows \n{0}\n\n", packet.Data);
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
             }
-            listener.Close();
+            channel.Client.Close();
         }
     }
 }

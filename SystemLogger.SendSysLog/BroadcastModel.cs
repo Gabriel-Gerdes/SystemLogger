@@ -26,7 +26,6 @@ namespace SystemLogger.SendSysLog
 
             Port = 514;
             Address = IPAddress.Broadcast;
-
             SendingEndPoint = new IPEndPoint(Address, Port);
             SendingSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             SendingSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Broadcast, 1);

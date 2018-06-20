@@ -1,22 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Net.Sockets;
-using SystemLogger.SendSysLog;
-using SytemLogger.Services;
-using System.Threading;
 
-namespace SystemLoggerConsole
+namespace SystemLogger.SendSysLog.CLS
 {
     class Program
     {
         static void Main(string[] args)
         {
-
             var signal = new Transmit();
-
+            Console.WriteLine(signal.AddBroadcastModel("Message Number One"));
 
             Console.WriteLine("Please enter the a name for the first broadcast.");
             string userName = Console.ReadLine();
@@ -26,8 +17,8 @@ namespace SystemLoggerConsole
             try
             {
                 Console.WriteLine(signal.AddBroadcastModel("Message Number One"));
-                Console.WriteLine(signal.AddBroadcastModel(userName, "10.0.0.255", 514));
-                signal.AddMessage("Message Number One", "This is a New Message");
+                Console.WriteLine(signal.AddBroadcastModel(userName, "192.168.10.18", 513));
+                signal.AddMessage("NewName", "This is a New Message");
                 signal.Start();
             }
             catch (Exception exception)
@@ -36,11 +27,6 @@ namespace SystemLoggerConsole
                 Console.Read();
             }
 
-            var input = new UDPServer();
-            input.Listen();
         }
     }
 }
-
-
-
