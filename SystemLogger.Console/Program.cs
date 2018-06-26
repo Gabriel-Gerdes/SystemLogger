@@ -14,7 +14,7 @@ namespace SystemLoggerConsole
     {
         static void Main(string[] args)
         {
-
+            /*
             var signal = new Transmit();
 
 
@@ -35,7 +35,7 @@ namespace SystemLoggerConsole
                 Console.WriteLine($"\n{exception.Message}");
                 Console.Read();
             }
-
+            */
             var input = new UDPServer();
             input.Listen();
         }
