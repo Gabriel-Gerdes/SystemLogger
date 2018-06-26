@@ -8,7 +8,6 @@ namespace ServiceLogger.Core
 {
     public class ChannelModel
     {
-        public bool Run { get; set; }
         public UdpClient Client { get; private set; }
         public IPEndPoint IPEndPoint { get; private set; }
         public Guid ID { get; private set; }
@@ -18,7 +17,6 @@ namespace ServiceLogger.Core
 
         public ChannelModel(int _port)
         {
-            Run = false;
             IPEndPoint = new IPEndPoint(IPAddress.Any, _port);
             Client = new UdpClient(_port);
             ID = Guid.NewGuid();
